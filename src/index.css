@@ -1,0 +1,155 @@
+body {
+  margin: 0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --header-height: 60px;
+}
+
+code {
+  font-family:
+    source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.maplibregl-children {
+  height: calc(100dvh - var(--header-height) - 2 * 20px) !important;
+  margin: 20px;
+  position: relative;
+  pointer-events: none;
+  box-sizing: border-box;
+
+  & * {
+    pointer-events: all;
+  }
+}
+
+/* Min posisjon: blå sirkel */
+.my-location {
+  position: relative;
+  width: 26px;
+  height: 26px;
+}
+
+.my-location-dot {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #1a73e8;
+  border: 4px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.my-location-pulse {
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  background: rgba(26, 115, 232, 0.35);
+  animation: my-location-pulse 2s ease-out infinite;
+}
+
+.my-location-label {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 3px 8px;
+  border-radius: 8px;
+  background: #1a73e8;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes my-location-pulse {
+  from { transform: scale(0.4); opacity: 1; }
+  to { transform: scale(1.4); opacity: 0; }
+}
+
+.my-location-searching {
+  animation: my-location-blink 1s ease-in-out infinite alternate;
+}
+
+@keyframes my-location-blink {
+  to { opacity: 0.3; }
+}
+
+/* Veiarbeid: tydelig varselskilt med beskrivelse */
+.roadwork-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transform-origin: bottom center;
+  transition: transform 0.15s ease-out;
+}
+
+.roadwork-sign {
+  position: relative;
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.45));
+  animation: roadwork-bounce 1.6s ease-in-out infinite;
+}
+
+.roadwork-sign::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.35);
+  animation: roadwork-pulse 1.6s ease-out infinite;
+  z-index: -1;
+}
+
+.roadwork-label {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 3px 9px;
+  border-radius: 8px;
+  background: #b91c1c;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.roadwork-marker:hover .roadwork-label,
+.roadwork-marker.is-selected .roadwork-label {
+  background: #7f1d1d;
+}
+
+.roadwork-marker:focus-visible {
+  outline: 3px solid #1a73e8;
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+@keyframes roadwork-pulse {
+  from { transform: scale(0.6); opacity: 1; }
+  to { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes roadwork-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roadwork-sign,
+  .roadwork-sign::before,
+  .my-location-pulse,
+  .my-location-searching {
+    animation: none;
+  }
+}
